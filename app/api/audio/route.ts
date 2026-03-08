@@ -8,7 +8,13 @@ export async function GET(request: NextRequest) {
 
   try {
     const decodedUrl = decodeURIComponent(url);
-    const res = await fetch(decodedUrl);
+    if (!decodedUrl.startsWith('http')) {
+      return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
+    }
+    const res = await fetch(decodedUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BHASHA-MEDIA-AI/1.0)' },
+      redirect: 'follow',
+    });
     if (!res.ok) {
       return new NextResponse(null, { status: res.status });
     }

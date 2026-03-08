@@ -11,9 +11,9 @@ interface AudioPlayerProps {
 function getProxyUrl(url: string): string {
   if (typeof window === 'undefined') return url;
   try {
-    const parsed = new URL(url);
-    const origin = window.location.origin;
-    if (parsed.origin === origin) return url;
+    const parsed = new URL(url, 'https://example.com');
+    const origin = window?.location?.origin;
+    if (!origin || parsed.origin === origin) return url;
     return `/api/audio?url=${encodeURIComponent(url)}`;
   } catch {
     return url;
@@ -36,11 +36,17 @@ export default function AudioPlayer({ src, className = '' }: AudioPlayerProps) {
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
-  const proxySrc = src ? getProxyUrl(src) : '';
+  const [useDirectUrl, setUseDirectUrl] = useState(false);
+  const proxySrc = src
+    ? useDirectUrl
+      ? src
+      : getProxyUrl(src)
+    : '';
 
   useEffect(() => {
     setError(null);
     setReady(false);
+    setUseDirectUrl(false);
     setCurrentTime(0);
     setDuration(0);
   }, [src]);
@@ -78,9 +84,14 @@ export default function AudioPlayer({ src, className = '' }: AudioPlayerProps) {
   }, [volume]);
 
   const handleError = () => {
-    setError('Failed to load audio');
-    setReady(false);
-    setIsPlaying(false);
+    if (!useDirectUrl && src && src.startsWith('http')) {
+      setUseDirectUrl(true);
+      setError(null);
+    } else {
+      setError('Failed to load audio');
+      setReady(false);
+      setIsPlaying(false);
+    }
   };
 
   const handleCanPlay = () => {
@@ -131,6 +142,7 @@ export default function AudioPlayer({ src, className = '' }: AudioPlayerProps) {
     >
       <div className="p-5">
         <audio
+          key={proxySrc}
           ref={audioRef}
           src={proxySrc}
           onEnded={() => { setIsPlaying(false); setCurrentTime(0); }}

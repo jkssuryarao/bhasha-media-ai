@@ -3,6 +3,7 @@ export interface GenerateResponse {
   audio_url?: string;
   audioUrl?: string;
   audio?: string;
+  audio_link?: string;
 }
 
 export interface GenerateRequest {
@@ -11,7 +12,8 @@ export interface GenerateRequest {
 }
 
 function getAudioUrl(data: GenerateResponse): string | null {
-  return data.audio_url || data.audioUrl || data.audio || null;
+  const url = data.audio_url ?? data.audioUrl ?? data.audio ?? data.audio_link ?? null;
+  return typeof url === 'string' && url.trim() ? url : null;
 }
 
 export async function generateContent(

@@ -125,9 +125,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deployment (Vercel)
 
+**Live URL:** https://bhashamediaai.vercel.app
+
 1. Push to GitHub
 2. Import project in Vercel
-3. Add environment variables: `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_LAMBDA_URL`
+3. Add environment variables:
+   - `NEXTAUTH_SECRET` - Generate with `openssl rand -base64 32`
+   - `NEXTAUTH_URL` - `https://bhashamediaai.vercel.app`
+   - `NEXT_PUBLIC_LAMBDA_URL` - `https://humutolm65f3ildxsj5pfy4ohu0dywdi.lambda-url.ap-southeast-2.on.aws/`
 4. Deploy
 
 ## API Contract
