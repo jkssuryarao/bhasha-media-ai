@@ -1,0 +1,19 @@
+{
+  "name": "BHASHA-MEDIA AI",
+  "short_name": "BHASHA-MEDIA",
+  "description": "Generate multilingual scripts and voice content for Indian creators using AI",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF9933",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"]
+}
